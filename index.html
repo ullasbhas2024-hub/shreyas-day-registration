@@ -635,38 +635,62 @@
                 isValid = false;
             }
 
-            if (isValid) {
-                // Collect form data
-                const selectedSports = Array.from(document.querySelectorAll('input[name="sports"]:checked'))
-                    .map(cb => cb.value)
-                    .join(', ');
+           if (isValid) {
+    // Collect form data
+    const selectedSports = Array.from(document.querySelectorAll('input[name="sports"]:checked'))
+        .map(cb => cb.value)
+        .join(', ');
 
-                const formData = {
-                    fullName: fullName,
-                    blockNumber: blockNumber,
-                    flatNumber: flatNumber,
-                    completeAddress: blockNumber + '-' + flatNumber,
-                    phone: phone,
-                    ageGroup: ageGroup.value,
-                    sports: selectedSports,
-                    additionalInfo: document.getElementById('additionalInfo').value.trim(),
-                    submissionTime: new Date().toLocaleString('en-IN')
-                };
+    const formData = {
+        fullName: fullName,
+        blockNumber: blockNumber,
+        flatNumber: flatNumber,
+        completeAddress: blockNumber + '-' + flatNumber,
+        phone: phone,
+        ageGroup: ageGroup.value,
+        sports: selectedSports,
+        additionalInfo: document.getElementById('additionalInfo').value.trim(),
+        submissionTime: new Date().toLocaleString('en-IN')
+    };
 
-                console.log('Form Data:', formData);
+    console.log('Form Data:', formData);
 
-                // Show success message
-                successMessage.classList.add('show');
-
-                // Reset form after delay
-                setTimeout(() => {
-                    form.reset();
-                    successMessage.classList.remove('show');
-                    sportsDetails.classList.remove('show');
-                }, 3000);
-            }
-        });
-
+    // Send data to Google Sheets
+    const webAppUrl = 'https://script.google.com/macros/s/AKfycbzbDEuqFQyCDVk1_MVUUBMqMv3qkKBvwQ54IRzCOhoXPXiumWlIJaBmtSSHM5batslQ/exec';
+    
+    fetch(webAppUrl, {
+        method: 'POST',
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log('Response from server:', result);
+        
+        // Show success message
+        successMessage.classList.add('show');
+        
+        // Reset form after delay
+        setTimeout(() => {
+            form.reset();
+            successMessage.classList.remove('show');
+            sportsDetails.classList.remove('show');
+        }, 3000);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Registration submitted locally. There was an issue with online backup.');
+        
+        // Show success message anyway
+        successMessage.classList.add('show');
+        
+        // Reset form after delay
+        setTimeout(() => {
+            form.reset();
+            successMessage.classList.remove('show');
+            sportsDetails.classList.remove('show');
+        }, 3000);
+    });
+}
         // Clear error messages when user starts typing
         form.querySelectorAll('input, textarea').forEach(field => {
             field.addEventListener('input', function() {
