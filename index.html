@@ -34,7 +34,7 @@
         }
 
         .container {
-            max-width: 700px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
@@ -93,12 +93,26 @@
             margin-bottom: 20px;
         }
 
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
         label {
             display: block;
             font-size: 14px;
             font-weight: 500;
             margin-bottom: 8px;
             color: var(--color-text);
+        }
+
+        .label-description {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            font-weight: 400;
+            margin-top: 2px;
+            display: block;
         }
 
         .required::after {
@@ -169,11 +183,12 @@
             cursor: pointer;
             font-weight: 500;
             user-select: none;
+            font-size: 13px;
         }
 
         .age-group-options {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 12px;
             margin-top: 10px;
         }
@@ -206,6 +221,28 @@
             cursor: pointer;
             font-weight: 500;
             user-select: none;
+            font-size: 13px;
+        }
+
+        .sport-details {
+            background: #F9F9F9;
+            padding: 15px;
+            border-radius: var(--radius);
+            margin-top: 15px;
+            border-left: 4px solid var(--color-primary);
+            display: none;
+        }
+
+        .sport-details.show {
+            display: block;
+        }
+
+        .sport-detail-item {
+            margin-bottom: 12px;
+        }
+
+        .sport-detail-item:last-child {
+            margin-bottom: 0;
         }
 
         .error-message {
@@ -297,27 +334,6 @@
             color: #0c5282;
         }
 
-        .sports-list {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            font-size: 13px;
-            color: var(--color-text-secondary);
-            margin-top: 10px;
-        }
-
-        .sports-list li {
-            list-style: none;
-            padding-left: 20px;
-            position: relative;
-        }
-
-        .sports-list li:before {
-            content: "⚽";
-            position: absolute;
-            left: 0;
-        }
-
         @media (max-width: 600px) {
             .header h1 {
                 font-size: 22px;
@@ -325,6 +341,10 @@
 
             .form-card {
                 padding: 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
             }
 
             .sports-grid {
@@ -367,10 +387,22 @@
                     <div class="error-message"></div>
                 </div>
 
-                <div class="form-group">
-                    <label for="flatBlock" class="required">Flat & Block Number</label>
-                    <input type="text" id="flatBlock" name="flatBlock" placeholder="e.g., A-101 or B-205" required>
-                    <div class="error-message"></div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="blockNumber" class="required">Block Number
+                            <span class="label-description">e.g., A, B1, B2, C1, C2, D</span>
+                        </label>
+                        <input type="text" id="blockNumber" name="blockNumber" placeholder="e.g., A, B1, B2, C1" required>
+                        <div class="error-message"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="flatNumber" class="required">Flat Number
+                            <span class="label-description">Your Flat/Apartment Number (e.g., 101)</span>
+                        </label>
+                        <input type="text" id="flatNumber" name="flatNumber" placeholder="e.g., 101 or 205" required>
+                        <div class="error-message"></div>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -383,24 +415,20 @@
                     <label class="required">Age Group</label>
                     <div class="age-group-options">
                         <div class="radio-option">
-                            <input type="radio" id="kids" name="ageGroup" value="Kids (5-12)" required>
-                            <label for="kids">👶 Kids (5-12)</label>
+                            <input type="radio" id="below15" name="ageGroup" value="Below 15 years" required>
+                            <label for="below15">👶 Below 15 yrs</label>
                         </div>
                         <div class="radio-option">
-                            <input type="radio" id="teens" name="ageGroup" value="Teens (13-18)" required>
-                            <label for="teens">👨 Teens (13-18)</label>
+                            <input type="radio" id="above15" name="ageGroup" value="Above 15 years" required>
+                            <label for="above15">👨 Above 15 yrs</label>
                         </div>
                         <div class="radio-option">
-                            <input type="radio" id="ladies" name="ageGroup" value="Ladies" required>
+                            <input type="radio" id="ladies" name="ageGroup" value="Ladies (All age)" required>
                             <label for="ladies">👩 Ladies</label>
                         </div>
                         <div class="radio-option">
-                            <input type="radio" id="gents" name="ageGroup" value="Gents" required>
+                            <input type="radio" id="gents" name="ageGroup" value="Gents (All age)" required>
                             <label for="gents">👨‍🦰 Gents</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="senior" name="ageGroup" value="Senior Citizens (60+)" required>
-                            <label for="senior">👴 Senior (50+)</label>
                         </div>
                     </div>
                     <div class="error-message"></div>
@@ -411,60 +439,88 @@
 
                 <div class="sports-grid">
                     <div class="sport-option">
-                        <input type="checkbox" id="carrom" name="sports" value="Carrom">
-                        <label for="carrom">🎯 Carrom</label>
-                    </div>
-                    <div class="sport-option">
-                        <input type="checkbox" id="tableTennis" name="sports" value="Table Tennis">
-                        <label for="tableTennis">🏓 Table Tennis</label>
-                    </div>
-                    <div class="sport-option">
-                        <input type="checkbox" id="tugOfWar" name="sports" value="Tug of War">
-                        <label for="tugOfWar">🪢 Tug of War</label>
-                    </div>
-                    <div class="sport-option">
-                        <input type="checkbox" id="slowCycling" name="sports" value="Slow Cycling">
-                        <label for="slowCycling">🚴 Slow Cycling</label>
-                    </div>
-                    <div class="sport-option">
-                        <input type="checkbox" id="lemonRace" name="sports" value="Lemon Race">
-                        <label for="lemonRace">🍋 Lemon Race</label>
-                    </div>
-                    <div class="sport-option">
-                        <input type="checkbox" id="swimming" name="sports" value="Swimming Race">
-                        <label for="swimming">🏊 Swimming Race</label>
-                    </div>
-                    <div class="sport-option">
-                        <input type="checkbox" id="cricket" name="sports" value="Cricket">
+                        <input type="checkbox" id="cricket" name="sports" value="Cricket" data-coordinator="Ranjith Shetty" data-phone="9945144495" data-date="14-Dec-25" data-venue="Boot Camp Academy">
                         <label for="cricket">🏏 Cricket</label>
                     </div>
                     <div class="sport-option">
-                        <input type="checkbox" id="football" name="sports" value="Football">
+                        <input type="checkbox" id="football" name="sports" value="Football" data-coordinator="Ullas" data-phone="9741119979" data-date="14-Dec-25" data-venue="GKVK">
                         <label for="football">⚽ Football</label>
                     </div>
                     <div class="sport-option">
-                        <input type="checkbox" id="billiards" name="sports" value="Billiards">
-                        <label for="billiards">🎱 Billiards</label>
+                        <input type="checkbox" id="carrom" name="sports" value="Carrom" data-coordinator="Shailendra" data-phone="9945405790" data-date="21-Dec-25 & 22-Dec-25" data-venue="Club House">
+                        <label for="carrom">🎯 Carrom</label>
                     </div>
                     <div class="sport-option">
-                        <div class="sport-option">
-    <input type="checkbox" id="badmintonSingles" name="sports" value="Badminton - Singles">
-    <label for="badmintonSingles">🏸 Badminton Singles</label>
-</div>
-<div class="sport-option">
-    <input type="checkbox" id="badmintonDoubles" name="sports" value="Badminton - Doubles">
-    <label for="badmintonDoubles">🏸 Badminton Doubles</label>
-</div>
-<div class="sport-option">
-    <input type="checkbox" id="badmintonMixed" name="sports" value="Badminton - Mixed (M/F pairs)">
-    <label for="badmintonMixed">🏸 Badminton Mixed (M/F)</label>
-</div>
+                        <input type="checkbox" id="chess" name="sports" value="Chess" data-coordinator="Anilkumar" data-phone="9148815791" data-date="21-Dec-25 & 22-Dec-25" data-venue="Club House">
+                        <label for="chess">♟️ Chess</label>
+                    </div>
+                    <div class="sport-option">
+                        <input type="checkbox" id="tableTennis" name="sports" value="Table Tennis" data-coordinator="Srinivas H" data-phone="9945211769" data-date="21-Dec-25 & 22-Dec-25" data-venue="Club House">
+                        <label for="tableTennis">🏓 Table Tennis</label>
+                    </div>
+                    <div class="sport-option">
+                        <input type="checkbox" id="badmintonSingles" name="sports" value="Badminton - Singles" data-coordinator="Gosuddin" data-phone="9243453010" data-date="21-Dec-25 & 22-Dec-25" data-venue="V3 Badminton Court (Near Big Market)">
+                        <label for="badmintonSingles">🏸 Badminton Singles</label>
+                    </div>
+                    <div class="sport-option">
+                        <input type="checkbox" id="badmintonDoubles" name="sports" value="Badminton - Doubles" data-coordinator="Gosuddin / Girish Parthasarathy" data-phone="9243453010 / 9980748485" data-date="21-Dec-25 & 22-Dec-25" data-venue="V3 Badminton Court">
+                        <label for="badmintonDoubles">🏸 Badminton Doubles</label>
+                    </div>
+                    <div class="sport-option">
+                        <input type="checkbox" id="badmintonMixed" name="sports" value="Badminton - Mixed" data-coordinator="Gosuddin / Girish Parthasarathy" data-phone="9243453010 / 9980748485" data-date="21-Dec-25 & 22-Dec-25" data-venue="V3 Badminton Court">
+                        <label for="badmintonMixed">🏸 Badminton Mixed</label>
+                    </div>
+                    <div class="sport-option">
+                        <input type="checkbox" id="billiards" name="sports" value="Billiards & Snooker" data-coordinator="Sanjay" data-phone="9243109916" data-date="21-Dec-25 & 22-Dec-25" data-venue="Club House">
+                        <label for="billiards">🎱 Billiards & Snooker</label>
+                    </div>
+                    <div class="sport-option">
+                        <input type="checkbox" id="logori" name="sports" value="Logori" data-coordinator="Girish Parthasarathy" data-phone="9980748485" data-date="27-Dec-25 & 28-Dec-25" data-venue="Badminton Court">
+                        <label for="logori">🎭 Logori</label>
+                    </div>
+                    <div class="sport-option">
+                        <input type="checkbox" id="cardsRummy" name="sports" value="Cards Rummy" data-coordinator="Avinash Vyas" data-phone="9739507227" data-date="27-Dec-25 & 28-Dec-25" data-venue="Club House">
+                        <label for="cardsRummy">🃏 Cards Rummy</label>
+                    </div>
+                    <div class="sport-option">
+                        <input type="checkbox" id="swimming" name="sports" value="Swimming" data-coordinator="Koushik Roy" data-phone="8123233364" data-date="27-Dec-25 & 28-Dec-25" data-venue="Club House">
+                        <label for="swimming">🏊 Swimming Race</label>
+                    </div>
+                    <div class="sport-option">
+                        <input type="checkbox" id="housie" name="sports" value="Housie" data-coordinator="Avinash Vyas" data-phone="9739507227" data-date="27-Dec-25 & 28-Dec-25" data-venue="Club House">
+                        <label for="housie">🎰 Housie</label>
+                    </div>
+                    <div class="sport-option">
+                        <input type="checkbox" id="tugOfWar" name="sports" value="Tug of War" data-coordinator="Cultural Committee" data-phone="N/A" data-date="27-Dec-25 & 28-Dec-25" data-venue="Club House">
+                        <label for="tugOfWar">🪢 Tug of War</label>
+                    </div>
+                    <div class="sport-option">
+                        <input type="checkbox" id="slowCycling" name="sports" value="Slow Cycling" data-coordinator="Cultural Committee" data-phone="N/A" data-date="27-Dec-25 & 28-Dec-25" data-venue="Club House">
+                        <label for="slowCycling">🚴 Slow Cycling</label>
+                    </div>
+                    <div class="sport-option">
+                        <input type="checkbox" id="lemonRace" name="sports" value="Lemon Race" data-coordinator="Cultural Committee" data-phone="N/A" data-date="27-Dec-25 & 28-Dec-25" data-venue="Club House">
+                        <label for="lemonRace">🍋 Lemon Race</label>
+                    </div>
+                    <div class="sport-option">
+                        <input type="checkbox" id="bagRace" name="sports" value="Bag Race" data-coordinator="Cultural Committee" data-phone="N/A" data-date="27-Dec-25 & 28-Dec-25" data-venue="Club House">
+                        <label for="bagRace">🎒 Bag Race</label>
+                    </div>
+                    <div class="sport-option">
+                        <input type="checkbox" id="musicalChair" name="sports" value="Musical Chair" data-coordinator="Cultural Committee" data-phone="N/A" data-date="27-Dec-25 & 28-Dec-25" data-venue="Club House">
+                        <label for="musicalChair">🪑 Musical Chair</label>
+                    </div>
                 </div>
                 <div class="error-message"></div>
 
+                <!-- Sports Details -->
+                <div id="sportsDetails" class="sport-details">
+                    <div id="detailsContent"></div>
+                </div>
+
                 <div class="form-group" style="margin-top: 20px;">
                     <label for="additionalInfo">Any Additional Info? (Optional)</label>
-                    <textarea id="additionalInfo" name="additionalInfo" placeholder="e.g., Special requirements, team name, etc." rows="3"></textarea>
+                    <textarea id="additionalInfo" name="additionalInfo" placeholder="e.g., Special requirements, team preferences, etc." rows="3"></textarea>
                 </div>
 
                 <div class="button-group">
@@ -482,6 +538,46 @@
     <script>
         const form = document.getElementById('registrationForm');
         const successMessage = document.querySelector('.success-message');
+        const sportsCheckboxes = document.querySelectorAll('input[name="sports"]');
+        const sportsDetails = document.getElementById('sportsDetails');
+        const detailsContent = document.getElementById('detailsContent');
+
+        // Update sports details when checkboxes change
+        sportsCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateSportsDetails);
+        });
+
+        function updateSportsDetails() {
+            const checkedSports = Array.from(sportsCheckboxes).filter(cb => cb.checked);
+            
+            if (checkedSports.length > 0) {
+                let html = '<h4 style="color: #2180A3; margin-bottom: 12px;">📋 Selected Sports Details:</h4>';
+                
+                checkedSports.forEach(sport => {
+                    const coordinator = sport.dataset.coordinator || 'N/A';
+                    const phone = sport.dataset.phone || 'N/A';
+                    const date = sport.dataset.date || 'N/A';
+                    const venue = sport.dataset.venue || 'N/A';
+                    
+                    html += `
+                        <div class="sport-detail-item" style="padding: 10px; background: white; border-radius: 6px; border-left: 3px solid #2180A3;">
+                            <strong>${sport.value}</strong><br>
+                            <small style="color: #666;">
+                                👤 Coordinator: ${coordinator}<br>
+                                📞 Phone: ${phone}<br>
+                                📅 Date: ${date}<br>
+                                📍 Venue: ${venue}
+                            </small>
+                        </div>
+                    `;
+                });
+                
+                detailsContent.innerHTML = html;
+                sportsDetails.classList.add('show');
+            } else {
+                sportsDetails.classList.remove('show');
+            }
+        }
 
         form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -499,11 +595,19 @@
                 isValid = false;
             }
 
-            // Validate Flat/Block
-            const flatBlock = document.getElementById('flatBlock').value.trim();
-            if (!flatBlock) {
-                document.getElementById('flatBlock').nextElementSibling.textContent = 'Please enter your flat and block number';
-                document.getElementById('flatBlock').nextElementSibling.classList.add('show');
+            // Validate Block Number
+            const blockNumber = document.getElementById('blockNumber').value.trim();
+            if (!blockNumber) {
+                document.getElementById('blockNumber').nextElementSibling.textContent = 'Please enter your block number';
+                document.getElementById('blockNumber').nextElementSibling.classList.add('show');
+                isValid = false;
+            }
+
+            // Validate Flat Number
+            const flatNumber = document.getElementById('flatNumber').value.trim();
+            if (!flatNumber) {
+                document.getElementById('flatNumber').nextElementSibling.textContent = 'Please enter your flat number';
+                document.getElementById('flatNumber').nextElementSibling.classList.add('show');
                 isValid = false;
             }
 
@@ -539,11 +643,14 @@
 
                 const formData = {
                     fullName: fullName,
-                    flatBlock: flatBlock,
+                    blockNumber: blockNumber,
+                    flatNumber: flatNumber,
+                    completeAddress: blockNumber + '-' + flatNumber,
                     phone: phone,
                     ageGroup: ageGroup.value,
                     sports: selectedSports,
-                    additionalInfo: document.getElementById('additionalInfo').value.trim()
+                    additionalInfo: document.getElementById('additionalInfo').value.trim(),
+                    submissionTime: new Date().toLocaleString('en-IN')
                 };
 
                 console.log('Form Data:', formData);
@@ -551,11 +658,11 @@
                 // Show success message
                 successMessage.classList.add('show');
 
-                // Optional: Send to server or Google Sheets
-                // For now, just show success and reset form after delay
+                // Reset form after delay
                 setTimeout(() => {
                     form.reset();
                     successMessage.classList.remove('show');
+                    sportsDetails.classList.remove('show');
                 }, 3000);
             }
         });
